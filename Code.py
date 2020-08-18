@@ -15,8 +15,16 @@ def game_info() -> dict:
 
 def confusing_stories():
     print('\n' * 5 + "Welcome to Confusing Stories!")
-    # story_templates = {key: (title, number of required, input words, story)}
-    # '@' is meant to be replaced with user_input
+
+    # stories = {
+    #            key: (
+    #                  title,
+    #                  number of required words,
+    #                  required word types,
+    #                  story
+    #                  )
+    #            }
+    # Each '@' is meant to be replaced with a word that is a user input
     stories = {
         '1': (
             'Spring Cartoon!',
@@ -110,6 +118,7 @@ def confusing_stories():
 
 def roll_dice():
     print('\n' * 5 + "Welcome to Roll Dice!")
+
     while True:
         decision = input('\nEnter now to roll 6-sided dice.\nEnter "x" to quit.\n'
                          'Or enter an integer of desire: ').strip().lower()
@@ -128,7 +137,7 @@ def roll_dice():
                         raise ValueError
                     incorrect = False
                 except ValueError:
-                    print("The number of sides must be an integer and greater than 5.")
+                    print("The number of sides has to be >= 6.")
                     decision = input("Enter a desired integer of sides: ").strip()
 
             print(f'{decision}-sided dice ------> {random.randint(1, decision)}')
@@ -145,9 +154,9 @@ def guess_number():
     print(f'The mysterious number is an integer between {lower} and {upper}.\n')
 
     count = 1
-    guess = range(lower, upper)[-1] + 1
+    guess = upper + 1
     while guess != mysterious_number and count <= limit:
-        guess = int(input(f'Your guess #{count}: '))
+        guess = int(input(f'Your guess #{count}/{limit}: '))
         if guess < mysterious_number:
             print(f"{guess} is less than the number")
         elif guess > mysterious_number:
@@ -168,12 +177,12 @@ def guess_number():
     quit_game()
 
 
+# Not game functions
+
 def quit_game():
-    input('\nPress Enter to continue: ')
+    input('\nPress Enter to continue... ')
     print('\n\n\n\n\n')
 
-
-# Not game functions
 
 def handle_decision(all_games) -> str:
     # get and check decision
