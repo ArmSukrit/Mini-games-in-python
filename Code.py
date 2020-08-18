@@ -96,8 +96,6 @@ def confusing_stories():
             else:
                 line += letter
 
-    print(f'\n{completed_story}')
-
     quit_game()
 
 
