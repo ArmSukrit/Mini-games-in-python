@@ -2,6 +2,15 @@ import random
 import time
 
 
+# do not forget to manually add new game's info to into this fucntion
+def game_info() -> dict:
+    return {
+        '1': ('Guess the Number', guess_number),
+        '2': ('Roll a dice', roll_dice),
+        '3': ('Confusing Stories', confusing_stories),
+            }
+
+
 # Every game function
 
 def confusing_stories():
@@ -187,13 +196,8 @@ def print_intro(all_games):
 
 # main structure
 def main():
-    # do not forget to manually add new game's info to this dictionary
     # all_games = {key: (game's title, game's function)}
-    all_games = {
-        '1': ('Guess the Number', guess_number),
-        '2': ('Roll a dice', roll_dice),
-        '3': ('Confusing Stories', confusing_stories),
-    }
+    all_games = game_info()
 
     while True:
 
