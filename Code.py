@@ -2,7 +2,7 @@ import random
 import time
 
 
-# do not forget to manually add new game's info to into this fucntion
+# do not forget to manually add new game's info into this function which acts as database
 def game_info() -> dict:
     return {
         '1': ('Guess the Number', guess_number),
@@ -11,7 +11,7 @@ def game_info() -> dict:
             }
 
 
-# Every game function
+# Every game function --------------------------------------------------------------------------------------------------
 
 def confusing_stories():
     print('\n' * 5 + "Welcome to Confusing Stories!")
@@ -108,8 +108,8 @@ def confusing_stories():
         else:
             if letter == ' ':
                 count = 0
-                print(f'\t\t{line.strip()}')
                 line = ''
+                print(f'\t\t{line.strip()}')
             else:
                 line += letter
 
@@ -156,14 +156,17 @@ def guess_number():
     count = 1
     guess = upper + 1
     while guess != mysterious_number and count <= limit:
-        guess = int(input(f'Your guess #{count}/{limit}: '))
-        if guess < mysterious_number:
-            print(f"{guess} is less than the number")
-        elif guess > mysterious_number:
-            print(f'{guess} is more than the number')
-        else:
-            break
-        count += 1
+        try:
+            guess = int(input(f'Your guess #{count}/{limit}: '))
+            if guess < mysterious_number:
+                print(f"{guess} is less than the number")
+            elif guess > mysterious_number:
+                print(f'{guess} is more than the number')
+            else:
+                break
+            count += 1
+        except ValueError:
+            print('\nYou need to input an integer!')
 
     if count < limit:
         print("\nCongratulations, you win!")
@@ -177,7 +180,7 @@ def guess_number():
     quit_game()
 
 
-# Not game functions
+# Not game functions ---------------------------------------------------------------------------------------------------
 
 def quit_game():
     input('\nPress Enter to continue... ')
@@ -203,9 +206,10 @@ def print_intro(all_games):
     print('Enter "x" to exit.\n')
 
 
-# main structure
+# main structure -------------------------------------------------------------------------------------------------------
+
 def main():
-    # all_games = {key: (game's title, game's function)}
+    # all_games = {key: (game title, game function)}
     all_games = game_info()
 
     while True:
@@ -215,7 +219,7 @@ def main():
         if decision == 'x':
             break
 
-        # run the selected game
+        # call the selected game function
         all_games[decision][1]()
 
     print("Thank you for playing!\nSee you next time. xd")
