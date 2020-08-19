@@ -1,5 +1,6 @@
 import random
 import time
+import os
 
 
 # do not forget to manually add new game's info into this function which acts as database
@@ -14,7 +15,7 @@ def game_info() -> dict:
 # Every game function --------------------------------------------------------------------------------------------------
 
 def confusing_stories():
-    print('\n' * 5 + "Welcome to Confusing Stories!")
+    print("Welcome to Confusing Stories!")
 
     # stories = {
     #            key: (
@@ -117,7 +118,7 @@ def confusing_stories():
 
 
 def roll_dice():
-    print('\n' * 5 + "Welcome to Roll Dice!")
+    print("Welcome to Roll Dice!")
 
     while True:
         decision = input('\nEnter now to roll 6-sided dice.\nEnter "x" to quit.\n'
@@ -144,7 +145,7 @@ def roll_dice():
 
 
 def guess_number():
-    print('\n' * 5 + 'Welcome to Guess the Number!')
+    print('Welcome to Guess the Number!')
 
     lower = 1
     upper = 100
@@ -182,9 +183,12 @@ def guess_number():
 
 # Not game functions ---------------------------------------------------------------------------------------------------
 
+def clear_console():
+    os.system('cls')
+
+
 def quit_game():
     input('\nPress Enter to continue... ')
-    print('\n\n\n\n\n')
 
 
 def handle_decision(all_games) -> str:
@@ -220,6 +224,7 @@ def main():
             break
 
         # call the selected game function
+        clear_console()
         all_games[decision][1]()
 
     print("Thank you for playing!\nSee you next time. xd")
