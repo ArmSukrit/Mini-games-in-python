@@ -5,7 +5,7 @@ import os
 
 def known_problems():
     """
-    1 printing completed story in confusing stories game
+    
     """
 
 
@@ -15,10 +15,85 @@ def game_info() -> dict:
         '1': ('Guess the Number', guess_number),
         '2': ('Roll a dice', roll_dice),
         '3': ('Confusing Stories', confusing_stories),
+        '4': ('Rock Paper Scissors', rock_paper_scissors)
             }
 
 
 # Every game function --------------------------------------------------------------------------------------------------
+
+def guess_word():
+    print("Guess the Word!")
+
+    random_word = ''  # to be implemented
+    length = len(random_word)
+    word_list = list(random_word)
+    blank_spaces = '_ ' * length
+    blank_spaces.strip()
+    you_have_guessed = set()
+    guess_limit = 5
+
+    # inform word's info
+    print(f'This mysterious word has {length} characters.\You have {guess_limit} guesses.\n')
+
+
+    return
+
+def rock_paper_scissors():
+    print("Welcome to Rock Paper Scissors!")
+
+    rock = 'rock'
+    paper = 'paper'
+    scissors = 'scissors'
+    possibilities = {'1': rock, '2': paper, '3': scissors}
+
+    print('Choose "x" to return to game selection.\n1')
+    while True:
+        inform = ''
+        for key, value in sorted(possibilities.items()):
+            inform += f'{key} = {value}\t'
+        print(inform + ' ----------> x to stop')
+
+        # input filter
+        while True:
+            you_choose = input('You choose: ').strip()
+            if you_choose == 'x':
+                break
+            if you_choose not in possibilities.keys():
+                print('Choose 1, 2 or 3.\n')
+            else:
+                break
+        if you_choose == 'x':
+            break
+
+        you_choose = possibilities[f'{you_choose}']
+        computer_chooses = possibilities[f'{random.randint(1, 3)}']
+
+        win = 'YOU WIN!'
+        lose = 'YOU LOSE!'
+        draw = 'DRAW!!!'
+        report = f'You: {you_choose} VS Computer: {computer_chooses} ---> '
+        if you_choose == computer_chooses:
+            report += draw
+        else:
+            if you_choose == rock:
+                if computer_chooses == paper:
+                    report += lose
+                else:
+                    report += win
+            elif you_choose == paper:
+                if computer_chooses == scissors:
+                    report += lose
+                else:
+                    report += win
+            else:
+                if computer_chooses == rock:
+                    report += lose
+                else:
+                    report += win
+
+        report += '\n'
+        print(report)
+
 
 def confusing_stories():
     print("Welcome to Confusing Stories!")
@@ -209,7 +284,7 @@ def guess_number():
 def replay(game_function):
 
     # Games that don't need to be replayed or can be replayed by its own game function are in exception list.
-    exception = [roll_dice]
+    exception = [roll_dice, rock_paper_scissors]
     if game_function in exception:
         return
 
