@@ -133,11 +133,11 @@ def confusing_stories():
             line += letter
             count += 1
             if letter == escape_char:
-                print(f'\t\t{line[:-1].strip()}\n')
+                print(f'\t{line[:-1].strip()}\n')
         else:
             if letter == ' ':
                 count = 0
-                print(f'\t\t{line.strip()}')
+                print(f'\t{line.strip()}')
                 line = ''
             else:
                 line += letter
