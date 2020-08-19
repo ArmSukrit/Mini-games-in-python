@@ -142,13 +142,6 @@ def confusing_stories():
             else:
                 line += letter
 
-    final_decision = input("Press Enter, return to story selection.\n"
-                           "Enter 'x', return to game selection.\n"
-                           "Enter your decision: ").strip().lower()
-    if final_decision == "":
-        clear_console()
-        confusing_stories()
-
 
 def roll_dice():
     print("Welcome to Roll Dice!")
@@ -214,6 +207,15 @@ def guess_number():
 
 # Not game functions ---------------------------------------------------------------------------------------------------
 
+def replay(game_function):
+    final_decision = input("Enter ---> replay.\n"
+                           "Enter 'x' ---> return to game selection.\n"
+                           "Enter your decision: ").strip().lower()
+    if final_decision == "":
+        clear_console()
+        game_function()
+
+
 def clear_console():
     os.system('cls')
 
@@ -227,10 +229,10 @@ def handle_decision(all_games) -> str:
     decision = ''
     while decision not in all_games.keys():
         decision = input("Enter a game number: ").strip()
-        if decision not in all_games.keys():
-            print("-----> Invalid game number\n")
         if decision == 'x':
             return decision
+        if decision not in all_games.keys():
+            print("-----> Invalid game number\n")
     return decision
 
 
@@ -257,11 +259,12 @@ def main():
         # call the selected game function
         clear_console()
         all_games[decision][1]()
+        replay(all_games[decision][1])
         quit_game()
         clear_console()
 
     # quit entire program
-    print("Thank you for playing!\nSee you next time. xd")
+    print("\nThank you for playing!\nSee you next time. xd")
     time.sleep(5)
 
 
