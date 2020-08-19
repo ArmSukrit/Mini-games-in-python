@@ -4,8 +4,9 @@ import os
 
 
 def known_problems():
-    return "1 print completed story in confusing stories game\n" \
-           ""
+    """
+    1 printing completed story in confusing stories game
+    """
 
 
 # do not forget to manually add new game's info into this function which acts as database
@@ -82,15 +83,36 @@ def confusing_stories():
     while decision not in stories.keys():
         decision = input('\nEnter a story number: ').strip()
         if decision not in stories.keys():
-            print('-----> Invalid story number.\n')
+            print('-----> Invalid story number.')
 
     # main game sequence
+    clear_console()
     title, num, types, story = stories[decision]
     required_words = types.split(', ')
     user_input = []
 
+    print(f'\n{title}')
+
+    invalid_value = ['./,;"(|}{[]<>):', "'-=_+%$#@!^&*"]
     for i, each in enumerate(required_words, 1):
-        user_input.append(input(f'{i}/{num} Enter {each}: '))
+        # input filter
+        chosen_word = ''
+        invalid = True
+        while invalid:
+            identified_invalid = set()
+            chosen_word = input(f'{i}/{num} Enter {each}: ').strip()
+            if chosen_word == '':
+                print("Enter a word!\n")
+            else:
+                for char in chosen_word:
+                    if char in invalid_value[0] or char in invalid_value[1]:
+                        identified_invalid.add(char)
+                if len(identified_invalid) == 0:
+                    invalid = False
+                else:
+                    print(f"Invalid input. Special digits '{', '.join(identified_invalid)}' are not allowed!\n")
+
+        user_input.append(chosen_word)
 
     add = range(1, len(story))
     story_list = story.split('@')
@@ -98,6 +120,7 @@ def confusing_stories():
         story_list.insert(index + add[index], f'"{word}"')
     completed_story = ''.join(story_list)
 
+    clear_console()
     print(f'\nHere is your confusing story!\n')
     # print line with proper length
     proper_length = 120
@@ -114,10 +137,17 @@ def confusing_stories():
         else:
             if letter == ' ':
                 count = 0
-                line = ''
                 print(f'\t\t{line.strip()}')
+                line = ''
             else:
                 line += letter
+
+    final_decision = input("Press Enter, return to story selection.\n"
+                           "Enter 'x', return to game selection.\n"
+                           "Enter your decision: ").strip().lower()
+    if final_decision == "":
+        clear_console()
+        confusing_stories()
 
 
 def roll_dice():
@@ -178,7 +208,7 @@ def guess_number():
         if guess == mysterious_number:
             print("\nCongratulations, you win!")
         else:
-            print("You LOSE!\n")
+            print("\nYou LOSE!")
     print(f'The mysterious number is {mysterious_number}.\n')
 
 
