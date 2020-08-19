@@ -3,6 +3,11 @@ import time
 import os
 
 
+def known_problems():
+    return "1 print completed story in confusing stories game\n" \
+           ""
+
+
 # do not forget to manually add new game's info into this function which acts as database
 def game_info() -> dict:
     return {
