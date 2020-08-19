@@ -123,7 +123,7 @@ def confusing_stories():
     clear_console()
     print(f'\nHere is your confusing story!\n')
     # print line with proper length
-    proper_length = 120
+    proper_length = 80
     line = ''
     escape_char = '#'
     completed_story += escape_char
@@ -150,10 +150,9 @@ def roll_dice():
         decision = input('\nEnter now to roll 6-sided dice.\nEnter "x" to quit.\n'
                          'Or enter an integer of desire: ').strip().lower()
         if decision == 'x':
-            print('\n' * 5)
             break
         elif decision == "":
-            print(f'6-sided dice ------> {random.randint(1, 6)}')
+            print(f'6-sided dice --------------------> {random.randint(1, 6)}')
         else:
             # check for integer
             incorrect = True
@@ -167,7 +166,7 @@ def roll_dice():
                     print("The number of sides has to be >= 6.")
                     decision = input("Enter a desired integer of sides: ").strip()
 
-            print(f'{decision}-sided dice ------> {random.randint(1, decision)}')
+            print(f'{decision}-sided dice -------------------> {random.randint(1, decision)}')
 
 
 def guess_number():
@@ -208,6 +207,12 @@ def guess_number():
 # Not game functions ---------------------------------------------------------------------------------------------------
 
 def replay(game_function):
+
+    # Games that don't need to be replayed or can be replayed by its own game function are in exception list.
+    exception = [roll_dice]
+    if game_function in exception:
+        return
+
     final_decision = input("Enter ---> replay.\n"
                            "Enter 'x' ---> return to game selection.\n"
                            "Enter your decision: ").strip().lower()
