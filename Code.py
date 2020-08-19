@@ -114,8 +114,6 @@ def confusing_stories():
             else:
                 line += letter
 
-    quit_game()
-
 
 def roll_dice():
     print("Welcome to Roll Dice!")
@@ -178,8 +176,6 @@ def guess_number():
             print("You LOSE!\n")
     print(f'The mysterious number is {mysterious_number}.\n')
 
-    quit_game()
-
 
 # Not game functions ---------------------------------------------------------------------------------------------------
 
@@ -226,7 +222,10 @@ def main():
         # call the selected game function
         clear_console()
         all_games[decision][1]()
+        quit_game()
+        clear_console()
 
+    # quit entire program
     print("Thank you for playing!\nSee you next time. xd")
     time.sleep(5)
 
