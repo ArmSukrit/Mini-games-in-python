@@ -18,7 +18,7 @@ def game_info() -> dict:
         '3': ('Confusing Stories', confusing_stories),
         '4': ('Rock Paper Scissors', rock_paper_scissors),
         '5': ('Hangman', hangman),
-            }
+    }
 
 
 # Every game function --------------------------------------------------------------------------------------------------
@@ -27,47 +27,53 @@ def hangman():
     print("Welcome to Hangman!")
 
     word_generator = RandomWords()
-    limit = 5
+    number_of_words = 7
     # words selection
     while True:
-        print("\nRandoming words...")
-        random_words = word_generator.get_random_words(limit=limit)
+        print("\nFinding words... (If this takes too long, check your internet connection.)")
+        random_words = ''
+        try:
+            random_words = word_generator.get_random_words(limit=number_of_words)
+        except:
+            print("\nConnection error...\nHangman needs internet connection.\nPlease try again later.")
+            print_enter_to_continue()
+            clear_console()
+            main()
         for word in random_words:
             random_words.insert(0, word.lower())
-        random_words = random_words[:limit]
+        random_words = random_words[:number_of_words]
         print(f'The word is one of these: {", ".join(random_words)}')
         decision = input("Random a new word set ---> Enter x\n"
                          "             To start ---> Press Enter!\n"
-                         "(x, Enter)? --> ")
+                         "(x, Enter)? : ")
         if decision != 'x':
             break
     clear_console()
     print(f'\nThe mysterious word is among these: {", ".join(random_words)}\n')
 
-    hanger = "\t\t----\n" \
-             "\t\t    |"
+    hanger = "\t\t____\n" \
+             "\t\t           |"
     full_body = {
-        "head": "\t\t ( ^_^ )",
-        'neck': "\t\t    |",
-        'arms': '\t\t  \ | /\n'
-                '\t\t   \|/',
-        'body': '\t\t    |\n'
-                '\t\t    |',
-        'legs': '\t\t   / \ \n'
-                '\t\t  /   \ ',
-        'feet': '\t\t--     --'
+        "head": "\t\t        ( ^_^ )",
+        'neck': "\t\t           |",
+        'arms': '\t\t         \ | /\n'
+                '\t\t          \|/',
+        'body': '\t\t           |\n'
+                '\t\t           |',
+        'legs': '\t\t          / \ \n'
+                '\t\t         /   \ ',
+        'feet': '\t\t       --     --'
     }
     hang_order = ('head', 'neck', 'arms', 'body', 'legs', 'feet')
 
-    mysterious_word = random_words[random.randint(0, len(random_words))]
+    mysterious_word = random_words[random.randint(0, len(random_words)-1)]
     mysterious_word_to_report = mysterious_word[:]
     mysterious_word = list(mysterious_word)
     length = len(mysterious_word)
     blank_spaces = '_' * length
     blank_spaces = list(blank_spaces)
     guess_limit = 5
-    alphabets = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
-    alphabets = alphabets.split()
+    alphabets = "a b c d e f g h i j k l m n o p q r s t u v w x y z".split()
     you_have_guessed = []
     body = []
 
@@ -76,47 +82,69 @@ def hangman():
     input('Press Enter to continue...')
 
     # main game sequence
+    hang_order_index = 0
     while True:
+
         clear_console()
         print(f"{guess_limit} guesses left.")
         print(f"You haven't guessed: {' '.join(alphabets)}")
         if you_have_guessed:
-            print(f"you have guessed: {you_have_guessed}")
-        print(f'\n\t\t{blank_spaces}')
+            print(f"you have guessed: {' '.join(you_have_guessed)}")
+        print(f'\n\t\t{" ".join(blank_spaces)}')
         print(f'\t\t{hanger}')
         for part in body:
             print(part)
 
-        # guess check
-        hang_order_index = 0
-        while True:
-            guess = input("Your guess: ").strip().lower()
-            if not 'a' >= guess >= 'z':
-                print('You can guess an alphabet only!')
-            else:
+        # check whether win or lose
+        if set(mysterious_word) == {''}:
+            print(f"\nCongratulations! YOU WIN!!!.\nThe mysterious word is indeed '{mysterious_word_to_report}'.\n")
+            break
+        else:
+            if guess_limit == 0:
+                print(f"\nYOU LOSE!!!\nThe mysterious word is {mysterious_word_to_report}.\n")
                 break
 
+        # guess check
+        while True:
+            guess = input("Your guess: ").strip().lower()
+            if not 'a' <= guess <= 'z':
+                print('You can guess an alphabet only!')
+            else:
+                if len(guess) > 1:
+                    print('One character only!')
+                else:
+                    if guess in you_have_guessed:
+                        print(f'You have already guessed "{guess}"')
+                    else:
+                        break
+
         # game mechanism
+        # academy
+        you_have_guessed.append(guess)
         if guess in mysterious_word:
-            index = mysterious_word.index(guess)
-            mysterious_word.remove(guess)
-            blank_spaces[index] = guess
+            # reform mysterious_word and black_spaces
+            new_mysterious_word = []
+            new_black_spaces = blank_spaces.copy()
+            for index, char in enumerate(mysterious_word):
+                if guess == char:
+                    new_mysterious_word.append("")
+                    new_black_spaces[index] = guess
+                else:
+                    new_mysterious_word.append(char)
+                    if guess not in you_have_guessed:
+                        new_black_spaces[index] = '_'
+            mysterious_word = new_mysterious_word
+            blank_spaces = new_black_spaces
+
+            alphabets.remove(guess)
+
         else:
-            you_have_guessed.append(guess)
             alphabets.remove(guess)
             guess_limit -= 1
             body.append(full_body[hang_order[hang_order_index]])
             hang_order_index += 1
 
-        if not mysterious_word:
-            print(f"Congratulations! YOU WIN!!!.\nThe mysterious word is indeed {mysterious_word_to_report}.")
-            break
-        else:
-            if guess_limit == 0:
-                print(f"YOU LOSE!!!\nThe mysterious word is {mysterious_word_to_report}.")
-                break
-
-    quit_game()
+        print(f'mysterious_word = {mysterious_word}')
 
 
 def rock_paper_scissors():
@@ -127,7 +155,7 @@ def rock_paper_scissors():
     scissors = 'scissors'
     possibilities = {'1': rock, '2': paper, '3': scissors}
 
-    print('Choose "x" to return to game selection.\n1')
+    print('Choose "x" to return to game selection.\n')
     while True:
         inform = ''
         for key, value in sorted(possibilities.items()):
@@ -142,6 +170,7 @@ def rock_paper_scissors():
             if you_choose not in possibilities.keys():
                 print('Choose 1, 2 or 3.\n')
             else:
+                clear_console()
                 break
         if you_choose == 'x':
             break
@@ -197,7 +226,7 @@ def confusing_stories():
             'land. You may need a @ to keep the @ and @ out. As soon as @ is here you can go out there with '
             'your @ and plant all kinds of @. Then in a few months, you will have corn on the @ and big, @ '
             'flowers.'
-            ),
+        ),
         '2': (
             'Trip to the Park!',
             14,
@@ -206,7 +235,7 @@ def confusing_stories():
             'We also saw big @ balloons tied to a @. Once we got to the @ park, the sky turned @. '
             'It started to @ and @. @ and I @ all the way home. Tomorrow we will try to go to the @ '
             'park again and hope it does not @.'
-              ),
+        ),
         '3': (
             'Easter Hunt!',
             11,
@@ -215,7 +244,7 @@ def confusing_stories():
             "I am hoping that there will be a basket full of @ and @. Since it's spring, there's lots of "
             "@ on the ground. When I @ through it, I hope it doesn't get on my @. I love that "
             "the Easter @ hides things for us. It makes the @ day so very @!!"
-            ),
+        ),
         '4': (
             'Chocolate Bunny!',
             12,
@@ -226,7 +255,7 @@ def confusing_stories():
             "They use a package of @ dye. They pour it in a bowl full of @. Then they dip the @ in "
             "the bowl and then rinse it off. After the @ are dried, you place them in the Easter @ "
             "along with a @ chocolate bunny!"
-            )
+        )
     }
 
     # inform about stories
@@ -363,7 +392,6 @@ def guess_number():
 # Not game functions ---------------------------------------------------------------------------------------------------
 
 def replay(game_function):
-
     # Games that don't need to be replayed or can be replayed by its own game function are in exception list.
     exception = [roll_dice, rock_paper_scissors]
     if game_function in exception:
@@ -381,11 +409,11 @@ def clear_console():
     os.system('cls')
 
 
-def quit_game():
+def print_enter_to_continue():
     input('\nPress Enter to continue... ')
 
 
-def handle_decision(all_games) -> str:
+def get_input(all_games: dict) -> str:
     # get and check decision
     decision = ''
     while decision not in all_games.keys():
@@ -397,7 +425,7 @@ def handle_decision(all_games) -> str:
     return decision
 
 
-def print_intro(all_games):
+def print_intro(all_games: dict):
     print("\nAll available games:")
     for num, (title, function) in sorted(all_games.items()):
         print(f'{num}: {title}')
@@ -413,7 +441,7 @@ def main():
     while True:
 
         print_intro(all_games)
-        decision = handle_decision(all_games)
+        decision = get_input(all_games)
         if decision == 'x':
             break
 
@@ -421,7 +449,7 @@ def main():
         clear_console()
         all_games[decision][1]()
         replay(all_games[decision][1])
-        quit_game()
+        print_enter_to_continue()
         clear_console()
 
     # quit entire program
