@@ -39,9 +39,7 @@ def hangman():
             print_enter_to_continue()
             clear_console()
             main()
-        for word in random_words:
-            random_words.insert(0, word.lower())
-        random_words = random_words[:number_of_words]
+        random_words = [word.lower() for word in random_words]
         print(f'The word is one of these: {", ".join(random_words)}')
         decision = input("Random a new word set ---> Enter x\n"
                          "             To start ---> Press Enter!\n"
