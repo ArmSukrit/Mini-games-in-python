@@ -39,7 +39,14 @@ def hangman():
     print('\nDifficulty levels: ')
     for key, value in sorted(difficulty.items()):
         print(f'{key}: {value[0]}')
-    chosen_difficulty = input("Choose difficulty: ")
+
+    # input filter
+    chosen_difficulty = None
+    while True:
+        chosen_difficulty = input("Choose difficulty: ")
+        if chosen_difficulty not in difficulty.keys():
+            print(f'\nChoose {", ".join(difficulty.keys())} only!')
+
     word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
 
     # words selection
