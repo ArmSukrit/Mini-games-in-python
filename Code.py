@@ -1,6 +1,7 @@
 import random
 import time
 import os
+from random_word import RandomWords
 
 
 def known_problems():
@@ -15,28 +16,108 @@ def game_info() -> dict:
         '1': ('Guess the Number', guess_number),
         '2': ('Roll a dice', roll_dice),
         '3': ('Confusing Stories', confusing_stories),
-        '4': ('Rock Paper Scissors', rock_paper_scissors)
+        '4': ('Rock Paper Scissors', rock_paper_scissors),
+        '5': ('Hangman', hangman),
             }
 
 
 # Every game function --------------------------------------------------------------------------------------------------
 
-def guess_word():
-    print("Guess the Word!")
+def hangman():
+    print("Welcome to Hangman!")
 
-    random_word = ''  # to be implemented
-    length = len(random_word)
-    word_list = list(random_word)
-    blank_spaces = '_ ' * length
-    blank_spaces.strip()
-    you_have_guessed = set()
+    word_generator = RandomWords()
+    limit = 5
+    # words selection
+    while True:
+        print("\nRandoming words...")
+        random_words = word_generator.get_random_words(limit=limit)
+        for word in random_words:
+            random_words.insert(0, word.lower())
+        random_words = random_words[:limit]
+        print(f'The word is one of these: {", ".join(random_words)}')
+        decision = input("Random a new word set ---> Enter x\n"
+                         "             To start ---> Press Enter!\n"
+                         "(x, Enter)? --> ")
+        if decision != 'x':
+            break
+    clear_console()
+    print(f'\nThe mysterious word is among these: {", ".join(random_words)}\n')
+
+    hanger = "\t\t----\n" \
+             "\t\t    |"
+    full_body = {
+        "head": "\t\t ( ^_^ )",
+        'neck': "\t\t    |",
+        'arms': '\t\t  \ | /\n'
+                '\t\t   \|/',
+        'body': '\t\t    |\n'
+                '\t\t    |',
+        'legs': '\t\t   / \ \n'
+                '\t\t  /   \ ',
+        'feet': '\t\t--     --'
+    }
+    hang_order = ('head', 'neck', 'arms', 'body', 'legs', 'feet')
+
+    mysterious_word = random_words[random.randint(0, len(random_words))]
+    mysterious_word_to_report = mysterious_word[:]
+    mysterious_word = list(mysterious_word)
+    length = len(mysterious_word)
+    blank_spaces = '_' * length
+    blank_spaces = list(blank_spaces)
     guess_limit = 5
+    alphabets = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
+    alphabets = alphabets.split()
+    you_have_guessed = []
+    body = []
 
     # inform word's info
-    print(f'This mysterious word has {length} characters.\You have {guess_limit} guesses.\n')
+    print(f'This mysterious word has {length} characters.\nYou have {guess_limit} guesses.\n')
+    input('Press Enter to continue...')
 
+    # main game sequence
+    while True:
+        clear_console()
+        print(f"{guess_limit} guesses left.")
+        print(f"You haven't guessed: {' '.join(alphabets)}")
+        if you_have_guessed:
+            print(f"you have guessed: {you_have_guessed}")
+        print(f'\n\t\t{blank_spaces}')
+        print(f'\t\t{hanger}')
+        for part in body:
+            print(part)
 
-    return
+        # guess check
+        hang_order_index = 0
+        while True:
+            guess = input("Your guess: ").strip().lower()
+            if not 'a' >= guess >= 'z':
+                print('You can guess an alphabet only!')
+            else:
+                break
+
+        # game mechanism
+        if guess in mysterious_word:
+            index = mysterious_word.index(guess)
+            mysterious_word.remove(guess)
+            blank_spaces[index] = guess
+        else:
+            you_have_guessed.append(guess)
+            alphabets.remove(guess)
+            guess_limit -= 1
+            body.append(full_body[hang_order[hang_order_index]])
+            hang_order_index += 1
+
+        if not mysterious_word:
+            print(f"Congratulations! YOU WIN!!!.\nThe mysterious word is indeed {mysterious_word_to_report}.")
+            break
+        else:
+            if guess_limit == 0:
+                print(f"YOU LOSE!!!\nThe mysterious word is {mysterious_word_to_report}.")
+                break
+
+    quit_game()
+
 
 def rock_paper_scissors():
     print("Welcome to Rock Paper Scissors!")
