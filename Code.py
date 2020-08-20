@@ -44,6 +44,7 @@ def hangman():
 
     # words selection
     while True:
+        clear_console()
         print("\nGathering words... (If this takes too long, check your internet connection.)")
         random_words = ''
         try:
@@ -75,20 +76,21 @@ def hangman():
     clear_console()
     print(f'\nThe mysterious word is among these: {", ".join(random_words)}\n')
 
-    hanger = "\t\t____\n" \
-             "\t\t           |"
     full_body = {
-        "head": "\t\t        ( ^_^ )",
-        'neck': "\t\t           |",
-        'arms': '\t\t         \ | /\n'
-                '\t\t          \|/',
-        'body': '\t\t           |\n'
-                '\t\t           |',
-        'legs': '\t\t          / \ \n'
-                '\t\t         /   \ ',
-        'feet': '\t\t       --     --'
+        'hanger': '_________________\n'
+                  '                |\n'
+                  '                |',
+        'head': '              (T_T)',
+        'neck': '                |',
+        'arms': '              \ | /\n'
+                '               \|/',
+        'body': '                |\n'
+                '                |',
+        'legs': '               / \ \n'
+                '              /   \ ',
+        'feet': '            __     __'
     }
-    hang_order = ('head', 'neck', 'arms', 'body', 'legs', 'feet')
+    hang_order = ('hanger', 'head', 'neck', 'arms', 'body', 'legs', 'feet')
 
     mysterious_word = random_words[random.randint(0, len(random_words)-1)]
     mysterious_word_to_report = mysterious_word[:]
@@ -96,7 +98,7 @@ def hangman():
     length = len(mysterious_word)
     blank_spaces = '_' * length
     blank_spaces = list(blank_spaces)
-    guess_limit = 5
+    guess_limit = len(full_body.keys())
     alphabets = "a b c d e f g h i j k l m n o p q r s t u v w x y z".split()
     you_have_guessed = []
     body = []
@@ -113,9 +115,8 @@ def hangman():
         print(f"{guess_limit} guesses left.")
         print(f"You haven't guessed: {' '.join(alphabets)}")
         if you_have_guessed:
-            print(f"you have guessed: {' '.join(you_have_guessed)}")
+            print(f"You have guessed: {' '.join(you_have_guessed)}")
         print(f'\n\t\t\t\t{" ".join(blank_spaces)}')
-        print(f'\t\t{hanger}')
         for part in body:
             print(part)
 
@@ -161,14 +162,11 @@ def hangman():
             blank_spaces = new_black_spaces
 
             alphabets.remove(guess)
-
         else:
             alphabets.remove(guess)
             guess_limit -= 1
             body.append(full_body[hang_order[hang_order_index]])
             hang_order_index += 1
-
-        print(f'mysterious_word = {mysterious_word}')
 
 
 def rock_paper_scissors():
