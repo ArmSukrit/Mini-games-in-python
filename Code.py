@@ -17,7 +17,7 @@ def game_info() -> dict:
         '2': ('Roll a dice', roll_dice),
         '3': ('Confusing Stories', confusing_stories),
         '4': ('Rock Paper Scissors', rock_paper_scissors),
-        '5': ('Hangman', hangman),
+        '5': ('Hangman (requires internet connection)', hangman),
     }
 
 
@@ -27,21 +27,47 @@ def hangman():
     print("Welcome to Hangman!")
 
     word_generator = RandomWords()
-    number_of_words = 7
+    number_of_words = 10
+
+    a = '---> word length ='
+    difficulty = {
+        '1': (f'easy {a} 5 or 6', random.randint(5, 6)),
+        '2': (f'normal {a} 7 or 8', random.randint(7, 8)),
+        '3': (f'hard {a} 9 or 10', random.randint(9, 10)),
+        '4': (f'random {a} between 5 and 10', random.randint(5, 10),)
+    }
+    print('\nDifficulty levels: ')
+    for key, value in sorted(difficulty.items()):
+        print(f'{key}: {value[0]}')
+    chosen_difficulty = input("Choose difficulty: ")
+    word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
+
     # words selection
     while True:
-        print("\nFinding words... (If this takes too long, check your internet connection.)")
+        print("\nGathering words... (If this takes too long, check your internet connection.)")
         random_words = ''
         try:
-            random_words = word_generator.get_random_words(limit=number_of_words)
+            random_words = word_generator.get_random_words(
+                limit=number_of_words, minLength=word_length, maxLength=word_length
+            )
         except:
-            print("\nConnection error...\nHangman needs internet connection.\nPlease try again later.")
+            print("\nConnection error...\nHangman needs stable internet connection.\nPlease try again later.")
             print_enter_to_continue()
             clear_console()
             main()
+
         random_words = [word.lower() for word in random_words]
-        print(f'The word is one of these: {", ".join(random_words)}')
-        decision = input("Random a new word set ---> Enter x\n"
+        # filter any word which contains non-alphabetical out
+        for word in random_words:
+            remove = False
+            for alphabet in word:
+                if not 'a' <= alphabet <= 'z':
+                    remove = True
+            if remove:
+                random_words.remove(word)
+
+        print(f'The word is one of these: \n\n\t{", ".join(random_words)}\n')
+        decision = input("Random a new word set ---> Enter 'x'\n"
                          "             To start ---> Press Enter!\n"
                          "(x, Enter)? : ")
         if decision != 'x':
@@ -88,7 +114,7 @@ def hangman():
         print(f"You haven't guessed: {' '.join(alphabets)}")
         if you_have_guessed:
             print(f"you have guessed: {' '.join(you_have_guessed)}")
-        print(f'\n\t\t{" ".join(blank_spaces)}')
+        print(f'\n\t\t\t\t{" ".join(blank_spaces)}')
         print(f'\t\t{hanger}')
         for part in body:
             print(part)
