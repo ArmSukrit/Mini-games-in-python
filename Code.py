@@ -120,7 +120,7 @@ def hangman():
         if decision != 'x':
             break
     clear_console()
-    print(f'\nThe mysterious word is among these: {", ".join(random_words)}\n')
+    print(f'\nThe mysterious word is among these: \n\n\t{", ".join(random_words)}\n')
 
     full_body = {
         'hanger': '_________________\n'
