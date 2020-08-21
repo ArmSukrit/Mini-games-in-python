@@ -2,11 +2,12 @@ import random
 import time
 import os
 from random_word import RandomWords
+import numpy as np
 
 
 def known_problems():
     """
-    
+    1. 4 in a row is under developing
     """
 
 
@@ -22,6 +23,39 @@ def game_info() -> dict:
 
 
 # Every game function --------------------------------------------------------------------------------------------------
+
+def four_in_a_row():
+    print("Welcome to 4 In A Row!\n")
+
+    # table creation
+    row = 6
+    column = 7
+    numpy_table = np.zeros((row, column), int)
+    columns = (i + 1 for i in range(column))
+    stack_limit = column
+
+    # print rules
+    print(
+        "2 players have to take turns to choose a column to drop a coin\n"
+        "If whose every 4 coins align in a horizontal, diagonal or vertical row, that player wins.\n"
+    )
+
+    # game start
+    while True:
+
+        # print table for players to see
+        table_to_print = ''
+        for row in numpy_table:
+            table_to_print += '|'
+            for each_element in row:
+                table_to_print += f' {each_element} |'
+            table_to_print += '\n'
+        table_to_print += "-" * (4 * column + 1)
+        print(f'{table_to_print}\n')
+
+        # coin drop
+
+
 
 def hangman():
     print("Welcome to Hangman!")
