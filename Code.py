@@ -47,8 +47,12 @@ def hangman():
             print(f'\nChoose {", ".join(difficulty.keys())} only!')
         else:
             break
-
     word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
+
+    # hint at final guess with 30% chance
+    hint_active = False
+    if random.randint(1, 3) in range(1, 11):
+        hint_active = True
 
     # words selection
     while True:
@@ -60,7 +64,7 @@ def hangman():
                 limit=number_of_words, minLength=word_length, maxLength=word_length
             )
         except:
-            print("\nConnection error...\nHangman needs stable internet connection.\nPlease try again later.")
+            print("\nConnection error detected.\nHangman needs stable internet connection.\nPlease try again later.")
             print_enter_to_continue()
             clear_console()
             main()
@@ -104,8 +108,7 @@ def hangman():
     mysterious_word_to_report = mysterious_word[:]
     mysterious_word = list(mysterious_word)
     length = len(mysterious_word)
-    blank_spaces = '_' * length
-    blank_spaces = list(blank_spaces)
+    blank_spaces = list('_' * length)
     guess_limit = len(full_body.keys())
     alphabets = "a b c d e f g h i j k l m n o p q r s t u v w x y z".split()
     you_have_guessed = []
@@ -120,7 +123,12 @@ def hangman():
     while True:
 
         clear_console()
-        print(f"{guess_limit} guesses left.")
+        if guess_limit != 1:
+            print(f"{guess_limit} guesses left.")
+        else:
+            print("DECISIVE GUESS...")
+        if guess_limit == 1 and hint_active:
+            print(f'HINT!!! (30% chance)\nThe word is one of these: \n\n\t{", ".join(random_words)}\n')
         print(f"You haven't guessed: {' '.join(alphabets)}")
         if you_have_guessed:
             print(f"You have guessed: {' '.join(you_have_guessed)}")
