@@ -369,9 +369,9 @@ def confusing_stories():
 def roll_dice():
     print("Welcome to Roll Dice!")
 
+    print('\nEnter now to roll 6-sided dice.\nEnter "x" to quit.\nOr enter an integer to make a custom dice\n')
     while True:
-        decision = input('\nEnter now to roll 6-sided dice.\nEnter "x" to quit.\n'
-                         'Or enter an integer of desire: ').strip().lower()
+        decision = input("(Enter, integer >= 6)?: ").strip().lower()
         if decision == 'x':
             break
         elif decision == "":
