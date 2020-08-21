@@ -85,7 +85,7 @@ def hangman():
 
     # hint at final guess with 30% chance
     hint_active = False
-    if random.randint(1, 3) in range(1, 11):
+    if random.randint(1, 2) in range(1, 11):
         hint_active = True
 
     # words selection
@@ -128,8 +128,8 @@ def hangman():
                   '                |',
         'head': '              (T_T)',
         'neck': '                |',
-        'arms': '              \ | /\n'
-                '               \|/',
+        'arms': '              \ | / \n'
+                '               \|/ ',
         'body': '                |\n'
                 '                |',
         'legs': '               / \ \n'
@@ -162,7 +162,7 @@ def hangman():
         else:
             print("DECISIVE GUESS...")
         if guess_limit == 1 and hint_active:
-            print(f'HINT!!! (30% chance)\nThe word is one of these: \n\n\t{", ".join(random_words)}\n')
+            print(f'HINT!!! (20% chance)\nThe word is one of these: \n\n\t{", ".join(random_words)}\n')
         print(f"You haven't guessed: {' '.join(alphabets)}")
         if you_have_guessed:
             print(f"You have guessed: {' '.join(you_have_guessed)}")
