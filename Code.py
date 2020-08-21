@@ -28,36 +28,76 @@ def game_info() -> dict:
 def four_in_a_row():
     print("Welcome to 4 In A Row!\n")
 
+    # print rules
+    print(
+        'Rules:\n'
+        "\t2 players have to take turns to choose a column to drop a coin\n"
+        "\tIf whose every 4 coins align in a horizontal, diagonal or vertical line, that player wins.\n"
+    )
+
     # table creation
     row = 6
     column = 7
     numpy_table = np.zeros((row, column), int)
-    columns = (i + 1 for i in range(column))
+    num_table = np.zeros((row, column), int)
+    columns = [str(i + 1) for i in range(column)]
     stack_limit = column
 
-    # print rules
-    print(
-        "2 players have to take turns to choose a column to drop a coin\n"
-        "If whose every 4 coins align in a horizontal, diagonal or vertical line, that player wins.\n"
-    )
-
     # game start
+    print(f'columns = {columns}')
+    player1_column_history = []
+    player2_column_history = []
+    index = 1
+    player_order = (1, 2)
+    players = {
+        1: (player1_column_history, "1"),
+        2: (player2_column_history, "2")
+    }
+    filled_elements = (1, 2)
+    print(numpy_table)
     while True:
 
         # print table for players to see
-        table_to_print = ''
-        for row in numpy_table:
-            table_to_print += '|'
+        '''table_to_print = ''
+        for row in num_table:
+            table_to_print += '        |'
             for each_element in row:
                 table_to_print += f' {each_element} |'
             table_to_print += '\n'
-        table_to_print += "-" * (4 * column + 1)
-        print(f'{table_to_print}\n')
+        table_to_print += f'column:   {"   ".join(columns)}'
+        print(f'{table_to_print}\n')'''
 
         # coin drop
+        if index == 0:
+            index = 1
+        else:
+            index = 0
+        # get player decision
+        while True:
+            player_choose_column = input(f'Player {player_order[index]} chooses column: ')
+            if player_choose_column not in columns:
+                print(f'Possible columns are {" ".join(columns)} only!\n')
+            else:
+                break
+        players[index + 1][0].append(player_choose_column)
+        print(f'player 1 {player1_column_history}')
+        print(f'player 2 {player2_column_history}')
+        # drop in numpy_table
+        row_to_replace = row - 1
+
+        target = numpy_table[row_to_replace][int(player_choose_column) - 1]
+        print(target)
+        while True:
+            if target == 0:
+                numpy_table[row_to_replace][int(player_choose_column) - 1] = players[index + 1][1]
+                print(f'new target = {target}')
+                break
+            else:
+                row_to_replace -= 1
+                target = numpy_table[row_to_replace][int(player_choose_column)]
 
 
-        break
+        print(numpy_table)
 
 
 def hangman():
@@ -88,7 +128,7 @@ def hangman():
 
     # hint at final guess with 30% chance
     hint_active = False
-    if random.randint(1, 2) in range(1, 11):
+    if random.randint(1, 10) in {1, 2}:
         hint_active = True
 
     # words selection
