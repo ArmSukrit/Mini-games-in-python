@@ -437,7 +437,7 @@ def replay(game_function):
 
     final_decision = input("Enter ---> replay.\n"
                            "Enter 'x' ---> return to game selection.\n"
-                           "Enter your decision: ").strip().lower()
+                           "(Enter, x)?: ").strip().lower()
     if final_decision == "":
         clear_console()
         game_function()
