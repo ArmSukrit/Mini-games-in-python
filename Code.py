@@ -3,7 +3,7 @@ import time
 import os
 from random_word import RandomWords
 import numpy as np
-
+import getpass
 
 def known_problems():
     """
@@ -19,6 +19,7 @@ def game_info() -> dict:
         '3': ('Confusing Stories', confusing_stories),
         '4': ('Rock Paper Scissors', rock_paper_scissors),
         '5': ('Hangman (requires internet connection)', hangman),
+        '6': ('4 In A Row', four_in_a_row),
     }
 
 
@@ -37,7 +38,7 @@ def four_in_a_row():
     # print rules
     print(
         "2 players have to take turns to choose a column to drop a coin\n"
-        "If whose every 4 coins align in a horizontal, diagonal or vertical row, that player wins.\n"
+        "If whose every 4 coins align in a horizontal, diagonal or vertical line, that player wins.\n"
     )
 
     # game start
@@ -55,6 +56,8 @@ def four_in_a_row():
 
         # coin drop
 
+
+        break
 
 
 def hangman():
@@ -99,7 +102,7 @@ def hangman():
             )
         except:
             print("\nConnection error detected.\nHangman needs stable internet connection.\nPlease try again later.")
-            print_enter_to_continue()
+            input("Enter to continue...")
             clear_console()
             main()
 
@@ -481,10 +484,6 @@ def clear_console():
     os.system('cls')
 
 
-def print_enter_to_continue():
-    input('\nPress Enter to continue... ')
-
-
 def get_input(all_games: dict) -> str:
     # get and check decision
     decision = ''
@@ -519,9 +518,20 @@ def main():
 
         # call the selected game function
         clear_console()
-        all_games[decision][1]()
-        replay(all_games[decision][1])
-        print_enter_to_continue()
+        while True:
+            game_function = all_games[decision][1]
+            game_function()
+
+            # replay?
+            exception = [roll_dice, rock_paper_scissors]
+            if game_function in exception:
+                break
+            final_decision = input("Enter ---> replay.\n"
+                                   "Enter 'x' ---> return to game selection.\n"
+                                   "(Enter, x)?: ").strip().lower()
+            if final_decision != '':
+                break
+
         clear_console()
 
     # quit entire program
