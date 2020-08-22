@@ -10,8 +10,9 @@ import requests as req
 
 def known_problems():
     """
-    1. 4 in a row is under developing
+    1. 4 in a row: diagonal cond. check is to be coded
     2. getpass() does not seem to work
+    3. 4 in row: must use list to create table if want to use player's symbols not 1 or 2
     """
 
 
@@ -37,19 +38,26 @@ def four_in_a_row():
         table_to_print = ''
         for row_to_print in numpy_table:
             table_to_print += '        |'
+            times = 0
             for each_element in row_to_print:
-                table_to_print += f' {each_element} |'
+                if times < 9:
+                    table_to_print += f' {each_element} |'
+                else:
+                    table_to_print += f' {each_element}  |'
+                times += 1
             table_to_print += '\n'
         table_to_print += f'column:   {"   ".join(columns)}'
         print(f'{table_to_print}\n')
 
     def get_player_decision():
         while True:
-            decision = input(f'Player {player_order[index]} chooses column: ')
-            if decision not in columns:
+            player_decision = input(f'Player {player_order[index]} chooses column: ')
+            if player_decision == 'x':
+                return player_decision
+            if player_decision not in columns:
                 print(f'Possible columns are {" ".join(columns)} only!\n')
             else:
-                return decision
+                return player_decision
 
     # print rules
     print(
@@ -57,12 +65,40 @@ def four_in_a_row():
         "\t2 players have to take turns to choose a column to drop a coin\n"
         "\tIf whose every 4 coins align in a horizontal, diagonal or vertical line, that player wins.\n"
     )
-    print_enter_to_continue()
 
     # table creation
     row = 6
     column = 7
+    # select table size
+    while True:
+        decision = input(
+            'Do you want to create a bigger table? --> default is (row = 6 x column = 7)\n'
+            'With customization, row >= 6 and column >= 7\n'
+            '(y, n)?: '
+        )
+        if decision not in 'yn':
+            print('Choose y or n.')
+        else:
+            break
+    if decision == 'y':
+        while True:
+            try:
+                row = int(input('Number of rows: ').strip())
+                if row < 6:
+                    raise FileNotFoundError
+                column = int(input('Number of columns: ').strip())
+                if column < 7:
+                    raise ArithmeticError
+                print_enter_to_continue()
+                break
+            except FileNotFoundError:
+                print('Number of rows has to be >= 6!')
+            except ArithmeticError:
+                print('Number of columns has to be >= 7!')
+            except ValueError:
+                print('Enter only an integer!')
     numpy_table = np.zeros((row, column), int)
+    # possible columns
     columns = [str(i + 1) for i in range(column)]
     stack_limit = row
 
@@ -76,6 +112,7 @@ def four_in_a_row():
     }
 
     # game start
+    final_decision = ''
     while True:
         clear_console()
         # print table for players to see
@@ -88,7 +125,18 @@ def four_in_a_row():
         else:
             index = 0
         # get player decision
-        player_choose_column = get_player_decision()
+        while True:
+            player_choose_column = get_player_decision()
+            if player_choose_column == 'x':
+                final_decision = input('Are you sure you want to restart or exit now?\n'
+                                       '(y, n)?: ')
+                if final_decision == 'y':
+                    break
+            else:
+                break
+        if final_decision == 'y':
+            print()
+            break
 
         # drop in numpy_table
         target = numpy_table[row_to_replace][int(player_choose_column) - 1]
@@ -105,10 +153,11 @@ def four_in_a_row():
                     # get player decision again until valid
                     player_choose_column = get_player_decision()
 
-        # check for winning condition
+    # check for winning condition
         winner = 0
         winner_found = False
         alignment = None
+
         # horizontal
         i = 0
         for each_row in numpy_table:
@@ -128,6 +177,7 @@ def four_in_a_row():
                 alignment = 'horizontal'
                 winner = each_row[i]
                 break
+
         # vertical
         if not winner_found:
             column_to_check = 0
@@ -151,15 +201,17 @@ def four_in_a_row():
                         column_to_check += 1
                 if winner_found:
                     break
+
         # diagonal
         if not winner_found:
             pass
 
-        # winner announcement
+    # winner announcement
         if winner_found:
             clear_console()
             print_table()
-            print(f'The winner is player {winner}!!! ({alignment})\n')
+            print(f'The winner is player {winner}!!! \n'
+                  f'({alignment}, with last column = {player_choose_column})\n')
             break
 
 
