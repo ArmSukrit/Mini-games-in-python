@@ -5,6 +5,7 @@ from random_word import RandomWords
 import numpy as np
 import getpass
 import webbrowser as web
+import requests as req
 
 
 def known_problems():
@@ -105,8 +106,8 @@ def hangman():
     a = '---> word length ='
     difficulty = {
         '1': (f'easy {a} 5 or 6', random.randint(5, 6)),
-        '2': (f'normal {a} 7 or 8', random.randint(7, 8)),
-        '3': (f'hard {a} 9 or 10', random.randint(9, 10)),
+        '2': (f'normal {a} 7, 8 or 9', random.randint(7, 9)),
+        '3': (f'hard {a} 10 or more', None),
         '4': (f'random {a} between 5 and 10', random.randint(5, 10),)
     }
     print('\nDifficulty levels: ')
@@ -120,7 +121,6 @@ def hangman():
             print(f'\nChoose {", ".join(difficulty.keys())} only!')
         else:
             break
-    word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
 
     # hint at final guess with 30% chance
     hint_active = False
@@ -128,16 +128,22 @@ def hangman():
         hint_active = True
 
     # words selection
+    word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
     while True:
         clear_console()
         print("\nGathering words... (If this takes too long, check your internet connection.)")
         random_words = ''
         try:
-            random_words = word_generator.get_random_words(
-                limit=number_of_words, minLength=word_length, maxLength=word_length
-            )
+            if word_length is not None:
+                random_words = word_generator.get_random_words(
+                    limit=number_of_words, minLength=word_length, maxLength=word_length
+                )
+            else:
+                random_words = word_generator.get_random_words(
+                    limit=number_of_words, minLength=9
+                )
         except:
-            print("\nConnection error detected.\nHangman needs stable internet connection.\nPlease try again later.")
+            print("\nConnection error detected.\nHangman needs stable internet connection.\nPlease try again later.\n")
             input("Enter to continue...")
             clear_console()
             main()
