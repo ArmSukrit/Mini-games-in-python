@@ -3,14 +3,15 @@ import time
 import os
 from random_word import RandomWords
 import numpy as np
-import getpass
 import webbrowser as web
+from getpass import getpass
 import requests as req
 
 
 def known_problems():
     """
     1. 4 in a row is under developing
+    2. getpass() does not seem to work
     """
 
 
@@ -27,6 +28,8 @@ def game_info() -> dict:
 
 
 # Every game function --------------------------------------------------------------------------------------------------
+
+
 
 def four_in_a_row():
     print("Welcome to 4 In A Row!\n")
@@ -315,6 +318,11 @@ def rock_paper_scissors():
                 player1_chooses = input(f'{players[0][0]}: ').strip().lower()
             else:
                 player1_chooses = input(f'{players[1][0]}: ').strip().lower()
+                clear_console()
+                inform = ''
+                for key, value in sorted(possibilities.items()):
+                    inform += f'{key} = {value}\t'
+                print(inform + ' ----------> x to stop')
             if player1_chooses == 'x':
                 break
             if player1_chooses not in possibilities.keys():
