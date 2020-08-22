@@ -39,7 +39,6 @@ def four_in_a_row():
     row = 6
     column = 7
     numpy_table = np.zeros((row, column), int)
-    num_table = np.zeros((row, column), int)
     columns = [str(i + 1) for i in range(column)]
     stack_limit = column
 
@@ -54,18 +53,17 @@ def four_in_a_row():
         2: (player2_column_history, "2")
     }
     filled_elements = (1, 2)
-    print(numpy_table)
     while True:
 
         # print table for players to see
-        '''table_to_print = ''
-        for row in num_table:
+        table_to_print = ''
+        for row_to_print in numpy_table:
             table_to_print += '        |'
-            for each_element in row:
+            for each_element in row_to_print:
                 table_to_print += f' {each_element} |'
             table_to_print += '\n'
         table_to_print += f'column:   {"   ".join(columns)}'
-        print(f'{table_to_print}\n')'''
+        print(f'{table_to_print}\n')
 
         # coin drop
         if index == 0:
@@ -84,18 +82,14 @@ def four_in_a_row():
         print(f'player 2 {player2_column_history}')
         # drop in numpy_table
         row_to_replace = row - 1
-
         target = numpy_table[row_to_replace][int(player_choose_column) - 1]
-        print(target)
         while True:
             if target == 0:
                 numpy_table[row_to_replace][int(player_choose_column) - 1] = players[index + 1][1]
-                print(f'new target = {target}')
                 break
             else:
                 row_to_replace -= 1
                 target = numpy_table[row_to_replace][int(player_choose_column)]
-
 
         print(numpy_table)
 
@@ -206,6 +200,7 @@ def hangman():
             print("DECISIVE GUESS...")
         if guess_limit == 1 and hint_active:
             print(f'HINT!!! (20% chance)\nThe word is one of these: \n\n\t{", ".join(random_words)}\n')
+            hint_active = False
         print(f"You haven't guessed: {' '.join(alphabets)}")
         if you_have_guessed:
             print(f"You have guessed: {' '.join(you_have_guessed)}")
