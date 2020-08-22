@@ -29,36 +29,10 @@ def game_info() -> dict:
 
 # Every game function --------------------------------------------------------------------------------------------------
 
-
-
 def four_in_a_row():
     print("Welcome to 4 In A Row!\n")
 
-    # print rules
-    print(
-        'Rules:\n'
-        "\t2 players have to take turns to choose a column to drop a coin\n"
-        "\tIf whose every 4 coins align in a horizontal, diagonal or vertical line, that player wins.\n"
-    )
-
-    # table creation
-    row = 6
-    column = 7
-    numpy_table = np.zeros((row, column), int)
-    columns = [str(i + 1) for i in range(column)]
-    stack_limit = column
-
-    # game start
-    player1_column_history = []
-    player2_column_history = []
-    index = 1
-    player_order = (1, 2)
-    players = {
-        1: (player1_column_history, "1"),
-        2: (player2_column_history, "2")
-    }
-    while True:
-
+    def print_table():
         # print table for players to see
         table_to_print = ''
         for row_to_print in numpy_table:
@@ -69,23 +43,54 @@ def four_in_a_row():
         table_to_print += f'column:   {"   ".join(columns)}'
         print(f'{table_to_print}\n')
 
-        # coin drop
+    def get_player_decision():
+        while True:
+            decision = input(f'Player {player_order[index]} chooses column: ')
+            if decision not in columns:
+                print(f'Possible columns are {" ".join(columns)} only!\n')
+            else:
+                return decision
+
+    # print rules
+    print(
+        'Rules:\n'
+        "\t2 players have to take turns to choose a column to drop a coin\n"
+        "\tIf whose every 4 coins align in a horizontal, diagonal or vertical line, that player wins.\n"
+    )
+    print_enter_to_continue()
+
+    # table creation
+    row = 6
+    column = 7
+    numpy_table = np.zeros((row, column), int)
+    columns = [str(i + 1) for i in range(column)]
+    stack_limit = row
+
+    player1_column_history = []
+    player2_column_history = []
+    index = 1
+    player_order = (1, 2)
+    players = {
+        1: (player1_column_history, "1"),
+        2: (player2_column_history, "2")
+    }
+
+    # game start
+    while True:
+        clear_console()
+        # print table for players to see
+        print_table()
+
+        # coin drop process
+        row_to_replace = row - 1
         if index == 0:
             index = 1
         else:
             index = 0
         # get player decision
-        while True:
-            player_choose_column = input(f'Player {player_order[index]} chooses column: ')
-            if player_choose_column not in columns:
-                print(f'Possible columns are {" ".join(columns)} only!\n')
-            else:
-                break
-        players[index + 1][0].append(player_choose_column)
-        print(f'player 1 {player1_column_history}')
-        print(f'player 2 {player2_column_history}')
+        player_choose_column = get_player_decision()
+
         # drop in numpy_table
-        row_to_replace = row - 1
         target = numpy_table[row_to_replace][int(player_choose_column) - 1]
         while True:
             if target == 0:
@@ -93,7 +98,69 @@ def four_in_a_row():
                 break
             else:
                 row_to_replace -= 1
-                target = numpy_table[row_to_replace][int(player_choose_column)]
+                try:
+                    target = numpy_table[row_to_replace][int(player_choose_column) - 1]
+                except IndexError:
+                    print(f'Each stack in a column cannot go over {stack_limit}. Try another column\n')
+                    # get player decision again until valid
+                    player_choose_column = get_player_decision()
+
+        # check for winning condition
+        winner = 0
+        winner_found = False
+        alignment = None
+        # horizontal
+        i = 0
+        for each_row in numpy_table:
+            count = 1
+            for i in range(len(each_row)):
+                try:
+                    if each_row[i] == each_row[i + 1] and each_row[i] != 0:
+                        count += 1
+                        if count == 4:
+                            break
+                    else:
+                        count = 1
+                except IndexError:
+                    pass
+            if count == 4:
+                winner_found = True
+                alignment = 'horizontal'
+                winner = each_row[i]
+                break
+        # vertical
+        if not winner_found:
+            column_to_check = 0
+            count = 1
+            for e in range(column):
+                for i in range(row):
+                    try:
+                        if numpy_table[i][column_to_check] == numpy_table[i + 1][column_to_check] and\
+                                numpy_table[i][column_to_check] != 0:
+                            count += 1
+                            if count == 4:
+                                winner_found = True
+                                alignment = 'vertical'
+                                winner = numpy_table[i][column_to_check]
+                                break
+                        else:
+                            count = 1
+                    except IndexError:
+                        pass
+                    if i == row - 1:
+                        column_to_check += 1
+                if winner_found:
+                    break
+        # diagonal
+        if not winner_found:
+            pass
+
+        # winner announcement
+        if winner_found:
+            clear_console()
+            print_table()
+            print(f'The winner is player {winner}!!! ({alignment})\n')
+            break
 
 
 def hangman():
@@ -583,6 +650,10 @@ def guess_number():
 
 
 # Not game functions ---------------------------------------------------------------------------------------------------
+
+def print_enter_to_continue():
+    input('Press Enter to continue...')
+
 
 def replay(game_function):
     # Games that don't need to be replayed or can be replayed by its own game function are in exception list.
