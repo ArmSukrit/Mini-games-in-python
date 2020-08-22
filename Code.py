@@ -10,9 +10,10 @@ import requests as req
 
 def known_problems():
     """
-    1. 4 in a row: diagonal cond. check is to be coded
-    2. getpass() does not seem to work
-    3. 4 in row: must use list to create table if want to use player's symbols not 1 or 2
+    - 4 in a row: diagonal cond. check is to be coded
+    - getpass() does not seem to work
+    - 4 in row: must use list to create table if want to use player's symbols not 1 or 2
+    - Are >=2 players possible for 4 in a row?? interesting...
     """
 
 
@@ -24,7 +25,7 @@ def game_info() -> dict:
         '3': ('Confusing Stories', confusing_stories),
         '4': ('Rock Paper Scissors', rock_paper_scissors),
         '5': ('Hangman (requires internet connection)', hangman),
-        '6': ('4 In A Row', four_in_a_row),
+        '6': ('4 In A Row (requires 2 players)', four_in_a_row),
     }
 
 
