@@ -46,7 +46,6 @@ def four_in_a_row():
     stack_limit = column
 
     # game start
-    print(f'columns = {columns}')
     player1_column_history = []
     player2_column_history = []
     index = 1
@@ -55,7 +54,6 @@ def four_in_a_row():
         1: (player1_column_history, "1"),
         2: (player2_column_history, "2")
     }
-    filled_elements = (1, 2)
     while True:
 
         # print table for players to see
@@ -94,14 +92,9 @@ def four_in_a_row():
                 row_to_replace -= 1
                 target = numpy_table[row_to_replace][int(player_choose_column)]
 
-        print(numpy_table)
-
 
 def hangman():
     print("Welcome to Hangman!")
-
-    word_generator = RandomWords()
-    number_of_words = 10
 
     a = '---> word length ='
     difficulty = {
@@ -128,6 +121,9 @@ def hangman():
         hint_active = True
 
     # words selection
+    word_generator = RandomWords()
+    number_of_words = 10
+
     word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
     while True:
         clear_console()
@@ -279,57 +275,116 @@ def hangman():
 
 def rock_paper_scissors():
     print("Welcome to Rock Paper Scissors!")
+    print('Choose "x" to return to game selection.\n')
 
     rock = 'rock'
     paper = 'paper'
     scissors = 'scissors'
     possibilities = {'1': rock, '2': paper, '3': scissors}
+    mode = {'1': '1 player VS computer', '2': 'player 1 VS player 2'}
+    players = [
+        ['You', 'Computer'],
+        ['Player 1', 'Player 2']
+    ]
 
-    print('Choose "x" to return to game selection.\n')
+    # mode selection
+    single_player = True
+    print('Modes:')
+    for mode_key, mode_detail in sorted(mode.items()):
+        print(f'{mode_key}: {mode_detail}')
     while True:
+        selected_mode = input(f'(1, 2)?: ').strip()
+        if selected_mode in mode.keys():
+            break
+        else:
+            print('Choose either 1 or 2.\n')
+    if selected_mode != '1':
+        single_player = False
+    clear_console()
+
+    while True:
+        # inform what can be chosen
         inform = ''
         for key, value in sorted(possibilities.items()):
             inform += f'{key} = {value}\t'
         print(inform + ' ----------> x to stop')
 
-        # input filter
+        # first input filter
         while True:
-            you_choose = input('You choose: ').strip()
-            if you_choose == 'x':
+            if single_player:
+                player1_chooses = input(f'{players[0][0]}: ').strip().lower()
+            else:
+                player1_chooses = input(f'{players[1][0]}: ').strip().lower()
+            if player1_chooses == 'x':
                 break
-            if you_choose not in possibilities.keys():
+            if player1_chooses not in possibilities.keys():
                 print('Choose 1, 2 or 3.\n')
             else:
-                clear_console()
                 break
-        if you_choose == 'x':
+        if player1_chooses == 'x':
+            break
+        # second input filter, if there is.
+        if single_player:
+            player2_chooses = str(random.randint(1, 3))
+        else:
+            while True:
+                player2_chooses = input(f'{players[1][1]}: ').strip().lower()
+                if player2_chooses == 'x':
+                    break
+                if player2_chooses not in possibilities.keys():
+                    print('Choose 1, 2 or 3.\n')
+                else:
+                    break
+        if player2_chooses == 'x':
             break
 
-        you_choose = possibilities[f'{you_choose}']
-        computer_chooses = possibilities[f'{random.randint(1, 3)}']
+        player1_chooses = possibilities[player1_chooses]
+        player2_chooses = possibilities[player2_chooses]
 
-        win = 'YOU WIN!'
+        # report result process
+        clear_console()
+        if single_player:
+            report = f'{players[0][0]}: {player1_chooses} VS {players[0][1]}: {player2_chooses} ---> '
+        else:
+            report = f'{players[1][0]}: {player1_chooses} VS {players[1][1]}: {player2_chooses} ---> '
         lose = 'YOU LOSE!'
         draw = 'DRAW!!!'
-        report = f'You: {you_choose} VS Computer: {computer_chooses} ---> '
-        if you_choose == computer_chooses:
+        if player1_chooses == player2_chooses:
             report += draw
         else:
-            if you_choose == rock:
-                if computer_chooses == paper:
-                    report += lose
+            if player1_chooses == rock:
+                if player2_chooses == paper:
+                    if single_player:
+                        report += lose
+                    else:
+                        report += f'PLAYER 2 WINS!'
                 else:
-                    report += win
-            elif you_choose == paper:
-                if computer_chooses == scissors:
-                    report += lose
+                    if single_player:
+                        report += 'YOU WIN!'
+                    else:
+                        report += f'PLAYER 1 WINS!'
+            elif player1_chooses == paper:
+                if player2_chooses == scissors:
+                    if single_player:
+                        report += lose
+                    else:
+                        report += 'PLAYER 2 WINS!'
                 else:
-                    report += win
+                    if single_player:
+                        report += 'YOU WIN!'
+                    else:
+                        report += 'PLAYER 1 WINS!'
             else:
-                if computer_chooses == rock:
-                    report += lose
+                if player2_chooses == rock:
+                    if single_player:
+                        report += lose
+                    else:
+                        report += 'PLAYER 2 WINS!'
                 else:
-                    report += win
+                    if single_player:
+                        report += 'YOU WIN!'
+                    else:
+                        report += 'PLAYER 1 WINS!'
 
         report += '\n'
         print(report)
