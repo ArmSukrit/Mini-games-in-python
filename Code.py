@@ -4,6 +4,8 @@ import os
 from random_word import RandomWords
 import numpy as np
 import getpass
+import webbrowser as web
+
 
 def known_problems():
     """
@@ -198,15 +200,16 @@ def hangman():
             print(f"{guess_limit} guesses left.")
         else:
             print("DECISIVE GUESS...")
-        if guess_limit == 1 and hint_active:
-            print(f'HINT!!! (20% chance)\nThe word is one of these: \n\n\t{", ".join(random_words)}\n')
-            hint_active = False
+            if hint_active:
+                print(f'HINT!!! (20% chance)\nThe word is one of these: \n\n\t{", ".join(random_words)}\n')
+                hint_active = False
         print(f"You haven't guessed: {' '.join(alphabets)}")
         if you_have_guessed:
             print(f"You have guessed: {' '.join(you_have_guessed)}")
         print(f'\n\t\t\t\t{" ".join(blank_spaces)}')
-        for part in body:
-            print(part)
+        # body printing
+        for body_part in body:
+            print(body_part)
 
         # check whether win or lose
         if set(mysterious_word) == {''}:
