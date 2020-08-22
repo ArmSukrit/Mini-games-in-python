@@ -214,11 +214,23 @@ def hangman():
         # check whether win or lose
         if set(mysterious_word) == {''}:
             print(f"\nCongratulations! YOU WIN!!!.\nThe mysterious word is indeed '{mysterious_word_to_report}'.\n")
-            break
         else:
             if guess_limit == 0:
                 print(f"\nYOU LOSE!!!\nThe mysterious word is {mysterious_word_to_report}.\n")
-                break
+        if set(mysterious_word) == {''} or guess_limit == 0:
+            while True:
+                see_translation = input(f"Do you want to see translation in Thai for '{mysterious_word_to_report}'?\n"
+                                        "(y, n)?: ").strip().lower()
+                if see_translation not in 'yn':
+                    print("Enter y or n.\n")
+                else:
+                    print()
+                    break
+            if see_translation == 'y':
+                web.open(
+                    f'https://translate.google.com/#view=home&op=translate&sl=en&tl=th&text={mysterious_word_to_report}'
+                )
+            break
 
         # guess check
         while True:
@@ -235,7 +247,6 @@ def hangman():
                         break
 
         # game mechanism
-        # academy
         you_have_guessed.append(guess)
         if guess in mysterious_word:
             # reform mysterious_word and black_spaces
