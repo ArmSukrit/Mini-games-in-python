@@ -262,13 +262,25 @@ def four_in_a_row():
                     if winner_found:
                         break
 
-        # winner announcement
+        # check if table is fully filled
+        draw = True
+        for row in table:
+            if blank in row:
+                draw = False
+                break
+
+        # announcement
         if winner_found:
             clear_console()
             print_table()
             print(f'The winner is player {winner}!!! \n'
                   f'({alignment}, with last column = {player_choose_column})\n')
             break
+        if draw:
+            clear_console()
+            print_table()
+            print(f'Table is fully filled.\n'
+                  f'DRAW!!!\n')
 
 
 def hangman():
