@@ -9,6 +9,8 @@ def problems_or_nice_features():
     """
     - getpass() does not seem to work
     - in multiplayer games, winner announcement should be good looking, ex: use big emoji with winner's name/icon
+    - must have a lot of built-in words for hangman (get from RandomWords and save it in a list)
+    - 
     """
 
 
@@ -264,8 +266,8 @@ def four_in_a_row():
 
         # check if table is fully filled
         draw = True
-        for row in table:
-            if blank in row:
+        for each_row in table:
+            if blank in each_row:
                 draw = False
                 break
 
@@ -389,7 +391,7 @@ def hangman():
     # inform word's info
     print(f'\nThe mysterious word is among these: \n\n\t{", ".join(random_words[:len(random_words)//2])}\n'
           f'\t{", ".join(random_words[len(random_words)//2:])}\n')
-    input('Press Enter to continue...')
+    print_enter_to_continue()
 
     # main game sequence
     hang_order_index = 0
