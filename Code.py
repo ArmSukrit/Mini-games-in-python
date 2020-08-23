@@ -5,10 +5,10 @@ from random_word import RandomWords
 import webbrowser as web
 
 
-def known_problems():
+def problems_or_nice_features():
     """
-    - 4 in a row: diagonal cond. check is to be coded
     - getpass() does not seem to work
+    - in multiplayer games, winner announcement should be good looking, ex: use big emoji with winner's name/icon
     """
 
 
@@ -351,14 +351,16 @@ def hangman():
             if remove:
                 random_words.remove(word)
 
-        print(f'The word is one of these: \n\n\t{", ".join(random_words)}\n')
+        print(f'The word is one of these: \n\n\t{", ".join(random_words[:len(random_words)//2])}\n'
+              f'\t{", ".join(random_words[len(random_words)//2:])}\n')
         decision = input("Random a new word set ---> Enter 'x'\n"
                          "             To start ---> Press Enter!\n"
                          "(x, Enter)? : ")
         if decision != 'x':
             break
     clear_console()
-    print(f'\nThe mysterious word is among these: \n\n\t{", ".join(random_words)}\n')
+    print(f'\nThe mysterious word is among these: \n\n\t{", ".join(random_words[:len(random_words)//2])}\n'
+          f'\t{", ".join(random_words[len(random_words)//2:])}\n')
 
     full_body = {
         'hanger': '_________________\n'
