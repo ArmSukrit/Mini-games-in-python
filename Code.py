@@ -608,7 +608,7 @@ def confusing_stories():
             'Trip to the Park!',
             14,
             'person, adj, adj, noun, adj, noun, adj, adj, verb, verb, person, verb, adj, verb',
-            'Yesterday, @ and I went to the park. On our way to the @ park, we saw a @ @ on out bike. '
+            'Yesterday, @ and I went to the park. On our way to the @ park, we saw a @ @ on our bike. '
             'We also saw big @ balloons tied to a @. Once we got to the @ park, the sky turned @. '
             'It started to @ and @. @ and I @ all the way home. Tomorrow we will try to go to the @ '
             'park again and hope it does not @.'
