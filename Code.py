@@ -43,8 +43,7 @@ def four_in_a_row():
                     table_to_print += f' {each_element}  |'
                 times += 1
             table_to_print += '\n'
-        table_to_print += f'          {"   ".join(list(("^" * len(columns))))}' \
-                          f'\ncolumn:   {"   ".join(columns)}'
+        table_to_print += f'\ncolumn:   {"   ".join(columns)}'
         print(f'{table_to_print}\n')
 
     def get_player_decision():
@@ -110,22 +109,28 @@ def four_in_a_row():
     print()
     index = 1
     player_order = (1, 2)
-    while True:
-        icon1 = input(f'First player, choose your representative icon (cannot be "{blank}"): ').strip()
-        if len(icon1) != 1:
-            print('Only one character!')
-        elif icon1 == blank:
-            print(f'Not "{blank}"')
-        else:
-            break
-    while True:
-        icon2 = input(f'Second player, choose your representative icon (cannot be "{blank}"): ').strip()
-        if len(icon1) != 1:
-            print('Only one character!')
-        elif icon2 == blank:
-            print(f'Not "{blank}"')
-        else:
-            break
+    icon1 = ''
+    icon2 = icon1
+    while icon1 == icon2:
+        while True:
+            icon1 = input(f'First player, choose your representative icon (cannot be "{blank}"): ').strip()
+            if len(icon1) != 1:
+                print('Only one character!')
+            elif icon1 == blank:
+                print(f'Not "{blank}"')
+            else:
+                break
+        while True:
+            icon2 = input(f'Second player, choose your representative icon (cannot be "{blank}"): ').strip()
+            if len(icon2) != 1:
+                print('Only one character!')
+            elif icon2 == blank:
+                print(f'Not "{blank}"')
+            else:
+                break
+        if icon1 == icon2:
+            print('Cannot use the same icon!\n')
+
     players = {1: icon1, 2: icon2}
 
     # game start
