@@ -95,10 +95,11 @@ def four_in_a_row():
                 print('Enter only an integer!')
     # create table for real
     table = []
+    blank = '_'
     for i in range(row):
         each_row = []
         for k in range(column):
-            each_row.append(0)
+            each_row.append(blank)
         table.append(each_row)
     # possible columns
     columns = [str(i + 1) for i in range(column)]
@@ -109,20 +110,21 @@ def four_in_a_row():
     player_order = (1, 2)
     while True:
         icon1 = input('First player, choose your representative icon (cannot be "0"): ').strip()
-        if icon1 == '0':
+        if len(icon1) != 1:
+            print('Only one character!')
+        elif icon1 == '0':
             print('Not "0"')
         else:
             break
     while True:
         icon2 = input('Second player, choose your representative icon (cannot be "0"): ').strip()
-        if icon2 == '0':
+        if len(icon1) != 1:
+            print('Only one character!')
+        elif icon2 == '0':
             print('Not "0"')
         else:
             break
-    players = {
-        1: icon1,
-        2: icon2
-    }
+    players = {1: icon1, 2: icon2}
 
     # game start
     final_decision = ''
@@ -154,7 +156,7 @@ def four_in_a_row():
         # drop in table
         target = table[row_to_replace][int(player_choose_column) - 1]
         while True:
-            if target == 0:
+            if target == blank:
                 table[row_to_replace][int(player_choose_column) - 1] = players[index + 1]
                 break
             else:
@@ -166,7 +168,7 @@ def four_in_a_row():
                     # get player decision again until valid
                     player_choose_column = get_player_decision()
 
-    # check for winning condition
+        # check for winning condition
         winner = 0
         winner_found = False
         alignment = None
@@ -177,7 +179,7 @@ def four_in_a_row():
             count = 1
             for i in range(len(each_row)):
                 try:
-                    if each_row[i] == each_row[i + 1] and each_row[i] != 0:
+                    if each_row[i] == each_row[i + 1] and each_row[i] != blank:
                         count += 1
                         if count == 4:
                             break
@@ -199,7 +201,7 @@ def four_in_a_row():
                 for i in range(row):
                     try:
                         if table[i][column_to_check] == table[i + 1][column_to_check] and \
-                                table[i][column_to_check] != 0:
+                                table[i][column_to_check] != blank:
                             count += 1
                             if count == 4:
                                 winner_found = True
@@ -217,7 +219,41 @@ def four_in_a_row():
 
         # diagonal
         if not winner_found:
-            pass
+            # "backward" diag check
+            for i in range(row):
+                for k in range(column):
+                    try:
+                        left1 = table[i][k]
+                        left2 = table[i + 1][k + 1]
+                        right1 = table[i + 2][k + 2]
+                        right2 = table[i + 3][k + 3]
+                        if left1 == left2 == right1 == right2 and left1 != blank:
+                            winner_found = True
+                            winner = left1
+                            alignment = 'backward diagonal'
+                            break
+                    except IndexError:
+                        pass
+                if winner_found:
+                    break
+            # "forward" diag check
+            if not winner_found:
+                for i in range(row):
+                    for k in range(column):
+                        try:
+                            left1 = table[i][k]
+                            left2 = table[i - 1][k + 1]
+                            right1 = table[i - 2][k + 2]
+                            right2 = table[i - 3][k + 3]
+                            if left1 == left2 == right1 == right2 and left1 != blank:
+                                winner_found = True
+                                winner = left1
+                                alignment = 'forward diagonal'
+                                break
+                        except IndexError:
+                            pass
+                    if winner_found:
+                        break
 
         # winner announcement
         if winner_found:
