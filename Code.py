@@ -359,8 +359,6 @@ def hangman():
         if decision != 'x':
             break
     clear_console()
-    print(f'\nThe mysterious word is among these: \n\n\t{", ".join(random_words[:len(random_words)//2])}\n'
-          f'\t{", ".join(random_words[len(random_words)//2:])}\n')
 
     full_body = {
         'hanger': '_________________\n'
@@ -389,7 +387,8 @@ def hangman():
     body = []
 
     # inform word's info
-    print(f'This mysterious word has {length} characters.\nYou have {guess_limit} guesses.\n')
+    print(f'\nThe mysterious word is among these: \n\n\t{", ".join(random_words[:len(random_words)//2])}\n'
+          f'\t{", ".join(random_words[len(random_words)//2:])}\n')
     input('Press Enter to continue...')
 
     # main game sequence
