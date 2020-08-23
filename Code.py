@@ -27,6 +27,7 @@ def game_info() -> dict:
 # Every game function --------------------------------------------------------------------------------------------------
 
 def four_in_a_row():
+    clear_console()
     print("Welcome to 4 In A Row!\n")
 
     def print_table():
@@ -42,7 +43,8 @@ def four_in_a_row():
                     table_to_print += f' {each_element}  |'
                 times += 1
             table_to_print += '\n'
-        table_to_print += f'column:   {"   ".join(columns)}'
+        table_to_print += f'          {"   ".join(list(("^" * len(columns))))}' \
+                          f'\ncolumn:   {"   ".join(columns)}'
         print(f'{table_to_print}\n')
 
     def get_player_decision():
@@ -85,7 +87,6 @@ def four_in_a_row():
                 column = int(input('Number of columns: ').strip())
                 if column < 7:
                     raise ArithmeticError
-                print_enter_to_continue()
                 break
             except FileNotFoundError:
                 print('Number of rows has to be >= 6!')
@@ -106,22 +107,23 @@ def four_in_a_row():
     stack_limit = row
 
     # create players
+    print()
     index = 1
     player_order = (1, 2)
     while True:
-        icon1 = input('First player, choose your representative icon (cannot be "0"): ').strip()
+        icon1 = input(f'First player, choose your representative icon (cannot be "{blank}"): ').strip()
         if len(icon1) != 1:
             print('Only one character!')
-        elif icon1 == '0':
-            print('Not "0"')
+        elif icon1 == blank:
+            print(f'Not "{blank}"')
         else:
             break
     while True:
-        icon2 = input('Second player, choose your representative icon (cannot be "0"): ').strip()
+        icon2 = input(f'Second player, choose your representative icon (cannot be "{blank}"): ').strip()
         if len(icon1) != 1:
             print('Only one character!')
-        elif icon2 == '0':
-            print('Not "0"')
+        elif icon2 == blank:
+            print(f'Not "{blank}"')
         else:
             break
     players = {1: icon1, 2: icon2}
@@ -265,6 +267,7 @@ def four_in_a_row():
 
 
 def hangman():
+    clear_console()
     print("Welcome to Hangman!")
 
     a = '---> word length ='
@@ -445,6 +448,7 @@ def hangman():
 
 
 def rock_paper_scissors():
+    clear_console()
     print("Welcome to Rock Paper Scissors!")
     print('Choose "x" to return to game selection.\n')
 
@@ -567,6 +571,7 @@ def rock_paper_scissors():
 
 
 def confusing_stories():
+    clear_console()
     print("Welcome to Confusing Stories!")
 
     # stories = {
@@ -690,6 +695,7 @@ def confusing_stories():
 
 
 def roll_dice():
+    clear_console()
     print("Welcome to Roll Dice!")
 
     print('\nEnter now to roll 6-sided dice.\nEnter "x" to quit.\nOr enter an integer to make a custom dice\n')
@@ -716,6 +722,7 @@ def roll_dice():
 
 
 def guess_number():
+    clear_console()
     print('Welcome to Guess the Number!')
 
     lower = 1
