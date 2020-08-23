@@ -2,18 +2,13 @@ import random
 import time
 import os
 from random_word import RandomWords
-import numpy as np
 import webbrowser as web
-from getpass import getpass
-import requests as req
 
 
 def known_problems():
     """
     - 4 in a row: diagonal cond. check is to be coded
     - getpass() does not seem to work
-    - 4 in row: must use list to create table if want to use player's symbols not 1 or 2
-    - Are >=2 players possible for 4 in a row?? interesting...
     """
 
 
@@ -37,7 +32,7 @@ def four_in_a_row():
     def print_table():
         # print table for players to see
         table_to_print = ''
-        for row_to_print in numpy_table:
+        for row_to_print in table:
             table_to_print += '        |'
             times = 0
             for each_element in row_to_print:
@@ -52,7 +47,7 @@ def four_in_a_row():
 
     def get_player_decision():
         while True:
-            player_decision = input(f'Player {player_order[index]} chooses column: ')
+            player_decision = input(f'Player "{players[player_order[index]]}" chooses column: ')
             if player_decision == 'x':
                 return player_decision
             if player_decision not in columns:
@@ -98,18 +93,35 @@ def four_in_a_row():
                 print('Number of columns has to be >= 7!')
             except ValueError:
                 print('Enter only an integer!')
-    numpy_table = np.zeros((row, column), int)
+    # create table for real
+    table = []
+    for i in range(row):
+        each_row = []
+        for k in range(column):
+            each_row.append(0)
+        table.append(each_row)
     # possible columns
     columns = [str(i + 1) for i in range(column)]
     stack_limit = row
 
-    player1_column_history = []
-    player2_column_history = []
+    # create players
     index = 1
     player_order = (1, 2)
+    while True:
+        icon1 = input('First player, choose your representative icon (cannot be "0"): ').strip()
+        if icon1 == '0':
+            print('Not "0"')
+        else:
+            break
+    while True:
+        icon2 = input('Second player, choose your representative icon (cannot be "0"): ').strip()
+        if icon2 == '0':
+            print('Not "0"')
+        else:
+            break
     players = {
-        1: (player1_column_history, "1"),
-        2: (player2_column_history, "2")
+        1: icon1,
+        2: icon2
     }
 
     # game start
@@ -139,16 +151,16 @@ def four_in_a_row():
             print()
             break
 
-        # drop in numpy_table
-        target = numpy_table[row_to_replace][int(player_choose_column) - 1]
+        # drop in table
+        target = table[row_to_replace][int(player_choose_column) - 1]
         while True:
             if target == 0:
-                numpy_table[row_to_replace][int(player_choose_column) - 1] = players[index + 1][1]
+                table[row_to_replace][int(player_choose_column) - 1] = players[index + 1]
                 break
             else:
                 row_to_replace -= 1
                 try:
-                    target = numpy_table[row_to_replace][int(player_choose_column) - 1]
+                    target = table[row_to_replace][int(player_choose_column) - 1]
                 except IndexError:
                     print(f'Each stack in a column cannot go over {stack_limit}. Try another column\n')
                     # get player decision again until valid
@@ -161,7 +173,7 @@ def four_in_a_row():
 
         # horizontal
         i = 0
-        for each_row in numpy_table:
+        for each_row in table:
             count = 1
             for i in range(len(each_row)):
                 try:
@@ -186,13 +198,13 @@ def four_in_a_row():
             for e in range(column):
                 for i in range(row):
                     try:
-                        if numpy_table[i][column_to_check] == numpy_table[i + 1][column_to_check] and\
-                                numpy_table[i][column_to_check] != 0:
+                        if table[i][column_to_check] == table[i + 1][column_to_check] and \
+                                table[i][column_to_check] != 0:
                             count += 1
                             if count == 4:
                                 winner_found = True
                                 alignment = 'vertical'
-                                winner = numpy_table[i][column_to_check]
+                                winner = table[i][column_to_check]
                                 break
                         else:
                             count = 1
@@ -207,7 +219,7 @@ def four_in_a_row():
         if not winner_found:
             pass
 
-    # winner announcement
+        # winner announcement
         if winner_found:
             clear_console()
             print_table()
@@ -302,7 +314,7 @@ def hangman():
     }
     hang_order = ('hanger', 'head', 'neck', 'arms', 'body', 'legs', 'feet')
 
-    mysterious_word = random_words[random.randint(0, len(random_words)-1)]
+    mysterious_word = random_words[random.randint(0, len(random_words) - 1)]
     mysterious_word_to_report = mysterious_word[:]
     mysterious_word = list(mysterious_word)
     length = len(mysterious_word)
