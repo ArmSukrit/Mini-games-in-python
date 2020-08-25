@@ -318,6 +318,7 @@ def hangman():
     number_of_words = 10
 
     word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
+    limit = 10
     while True:
         # gather random words
         i = 1
@@ -335,11 +336,19 @@ def hangman():
                     )
                 if random_words:
                     break
-                else:
-                    print('Retrying... #' + str(i))
-                    i += 1
             except:
-                pass
+                print(f'{i}/{limit} Retrying...')
+                if i == limit:
+                    final_decision = input(
+                        f'{i} seconds have passed. Would you like to try again or go back to menu?\n'
+                        f'(t: try again, m: menu)?: ').strip().lower()
+                    if final_decision in ('t', 'try', 'try again'):
+                        i = 0
+                    else:
+                        clear_console()
+                        main()
+                i += 1
+                time.sleep(1)
 
         random_words = [word.lower() for word in random_words]
         # filter any word which contains non-alphabetical out
