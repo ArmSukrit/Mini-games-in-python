@@ -320,6 +320,7 @@ def hangman():
     word_length = difficulty.get(chosen_difficulty, random.randint(5, 10))[1]
     while True:
         # gather random words
+        i = 1
         while True:
             clear_console()
             print("\nGathering words... (If this takes too long, check your internet connection.)")
@@ -332,16 +333,13 @@ def hangman():
                     random_words = word_generator.get_random_words(
                         limit=number_of_words, minLength=10
                     )
-                break
+                if random_words:
+                    break
+                else:
+                    print('Retrying... #' + str(i))
+                    i += 1
             except:
-                print("\nConnection error detected.\nHangman needs stable internet connection.\nTry again?.")
-                while True:
-                    final_decision = input("(y, n)?: ").strip().lower()
-                    if final_decision in ['y', 'n']:
-                        break
-                if final_decision == 'n':
-                    clear_console()
-                    main()
+                pass
 
         random_words = [word.lower() for word in random_words]
         # filter any word which contains non-alphabetical out
