@@ -176,6 +176,8 @@ def four_in_a_row():
                     print(f'Each stack in a column cannot go over {stack_limit}. Try another column\n')
                     # get player decision again until valid
                     player_choose_column = get_player_decision()
+                    row_to_replace = row - 1
+                    target = table[row_to_replace][int(player_choose_column) - 1]
 
         # check for winning condition
         winner = 0
@@ -389,7 +391,8 @@ def hangman():
     mysterious_word_to_report = mysterious_word[:]
     mysterious_word = list(mysterious_word)
     length = len(mysterious_word)
-    blank_spaces = list('_' * length)
+    blank = '_'
+    blank_spaces = list(blank * length)
     guess_limit = len(full_body.keys())
     alphabets = "a b c d e f g h i j k l m n o p q r s t u v w x y z".split()
     you_have_guessed = []
@@ -468,7 +471,7 @@ def hangman():
                 else:
                     new_mysterious_word.append(char)
                     if guess not in you_have_guessed:
-                        new_black_spaces[index] = '_'
+                        new_black_spaces[index] = blank
             mysterious_word = new_mysterious_word
             blank_spaces = new_black_spaces
 
