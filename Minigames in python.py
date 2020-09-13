@@ -1,7 +1,7 @@
 import random
 import time
 import os
-from random_word import RandomWords
+from random_word import RandomWords  # pip install random-word
 import webbrowser as web
 
 
