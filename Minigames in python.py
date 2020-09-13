@@ -29,7 +29,6 @@ def game_info() -> dict:
 # Every game function --------------------------------------------------------------------------------------------------
 
 def four_in_a_row():
-    clear_console()
     print("Welcome to 4 In A Row!\n")
 
     def print_table():
@@ -285,10 +284,10 @@ def four_in_a_row():
             print_table()
             print(f'Table is fully filled.\n'
                   f'DRAW!!!\n')
+            break
 
 
 def hangman():
-    clear_console()
     print("Welcome to Hangman!")
 
     a = '---> word length ='
@@ -484,7 +483,6 @@ def hangman():
 
 
 def rock_paper_scissors():
-    clear_console()
     print("Welcome to Rock Paper Scissors!")
     print('Choose "x" to return to game selection.\n')
 
@@ -607,7 +605,6 @@ def rock_paper_scissors():
 
 
 def confusing_stories():
-    clear_console()
     print("Welcome to Confusing Stories!")
 
     # stories = {
@@ -731,7 +728,6 @@ def confusing_stories():
 
 
 def roll_dice():
-    clear_console()
     print("Welcome to Roll Dice!")
 
     print('\nEnter now to roll 6-sided dice.\nEnter "x" to quit.\nOr enter an integer to make a custom dice\n')
@@ -758,7 +754,6 @@ def roll_dice():
 
 
 def guess_number():
-    clear_console()
     print('Welcome to Guess the Number!')
 
     lower = 1
@@ -850,8 +845,8 @@ def main():
             break
 
         # call the selected game function
-        clear_console()
         while True:
+            clear_console()
             game_function = all_games[decision][1]
             game_function()
 
