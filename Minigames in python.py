@@ -14,7 +14,7 @@ def problems_or_nice_features():
     """
 
 
-# do not forget to manually add new game's info into this function which acts as database
+# do not forget to manually add new game's info into this function
 def game_info() -> dict:
     return {
         '1': ('Guess the Number', guess_number),
