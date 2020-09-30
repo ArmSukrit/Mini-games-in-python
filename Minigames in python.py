@@ -73,7 +73,7 @@ def four_in_a_row():
             'Do you want to create a bigger table? --> default is (row = 6 x column = 7)\n'
             'With customization, row >= 6 and column >= 7\n'
             '(y, n)?: '
-        )
+        ).strip().lower()
         if decision not in 'yn':
             print('Choose y or n.')
         else:
@@ -179,7 +179,7 @@ def four_in_a_row():
                     target = table[row_to_replace][int(player_choose_column) - 1]
 
         # check for winning condition
-        winner = 0
+        winner = None
         winner_found = False
         alignment = None
 
