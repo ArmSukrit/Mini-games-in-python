@@ -66,7 +66,7 @@ def hangman():
                 if i == limit:
                     final_decision = input(
                         f'{i} seconds have passed. Would you like to try again or go back to menu?\n'
-                        f'(t: try again, m: menu)?: ').strip().lower()
+                        f'(t: try again, x: quit)?: ').strip().lower()
                     if final_decision in ('t', 'try', 'try again'):
                         i = 0
                     else:
