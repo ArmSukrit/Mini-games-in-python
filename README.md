@@ -1,5 +1,5 @@
 # Mini-games-in-python
-A program which contains various mini games, written with python.
+A program which contains various mini games, written in python.
 
 ## Usage
 0. [download](https://www.python.org/downloads/) and install python
