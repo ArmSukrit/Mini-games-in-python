@@ -1,14 +1,22 @@
 import time
 
-from tools import *
-
-# import all games as global functions
-from games.fourInARow import four_in_a_row
-from games.hangman import hangman
-from games.rock_paper_scissors import rock_paper_scissors
-from games.confusing_story import confusing_stories
-from games.roll_dice import roll_dice
-from games.guess_number import guess_number
+while True:
+    try:
+        from games.confusing_story import confusing_stories
+        from games.fourInARow import four_in_a_row
+        from games.guess_number import guess_number
+        from games.hangman import hangman
+        from games.rock_paper_scissors import rock_paper_scissors
+        from games.roll_dice import roll_dice
+        from tools import *
+    except ImportError:
+        print("Installing dependencies...")
+        import os
+        import sys
+        os.system(sys.executable + " -m pip install -r requirements.txt")
+        os.system("cls")
+    else:
+        break
 
 
 def problems_or_nice_features():
