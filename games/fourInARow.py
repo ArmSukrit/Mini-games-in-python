@@ -1,6 +1,5 @@
-import sys
-sys.path.append("\\Mini-games-in-python\\")
 from tools import *
+import sys
 
 
 def four_in_a_row():
@@ -24,7 +23,8 @@ def four_in_a_row():
 
     def get_player_decision():
         while True:
-            player_decision = input(f'Player "{players[player_order[index]]}" chooses column: ')
+            player_decision = input(
+                f'Player "{players[player_order[index]]}" chooses column: ')
             if player_decision == 'x':
                 return player_decision
             if player_decision not in columns:
@@ -32,22 +32,13 @@ def four_in_a_row():
             else:
                 return player_decision
 
-    # print rules
-    print(
-        'Rules:\n'
-        "\t2 players have to take turns to choose a column to drop a coin\n"
-        "\tIf whose every 4 coins align in a horizontal, diagonal or vertical line, that player wins.\n"
-    )
-
     # table creation
     row = 6
     column = 7
     # select table size
     while True:
         decision = input(
-            'Do you want to create a bigger table? --> default is (row = 6 x column = 7)\n'
-            'With customization, row >= 6 and column >= 7\n'
-            '(y, n)?: '
+            'Table(row = 6 x column = 7)\nBigger table? (y, n)?: '
         ).strip().lower()
         if decision not in 'yn':
             print('Choose y or n.')
@@ -56,19 +47,24 @@ def four_in_a_row():
     if decision == 'y':
         while True:
             try:
-                row = int(input('Number of rows: ').strip())
-                if row < 6:
-                    raise FileNotFoundError
-                column = int(input('Number of columns: ').strip())
-                if column < 7:
-                    raise ArithmeticError
-                break
-            except FileNotFoundError:
-                print('Number of rows has to be >= 6!')
-            except ArithmeticError:
-                print('Number of columns has to be >= 7!')
+                row = int(input("row: "))
             except ValueError:
-                print('Enter only an integer!')
+                print("Integers only!")
+            else:
+                if row < 6:
+                    print("column has to be >= 6")
+                else:
+                    break
+        while True:
+            try:
+                column = int(input("row: "))
+            except ValueError:
+                print("Integers only!")
+            else:
+                if column < 7:
+                    print("column has to be >= 7")
+                else:
+                    break
     # create table for real
     table = []
     blank = '_'
@@ -89,7 +85,8 @@ def four_in_a_row():
     icon2 = icon1
     while icon1 == icon2:
         while True:
-            icon1 = input(f'First player, choose your representative icon (cannot be "{blank}"): ').strip()
+            icon1 = input(
+                f'First player, choose your representative icon (cannot be "{blank}"): ').strip()
             if len(icon1) != 1:
                 print('Only one character!')
             elif icon1 == blank:
@@ -97,7 +94,8 @@ def four_in_a_row():
             else:
                 break
         while True:
-            icon2 = input(f'Second player, choose your representative icon (cannot be "{blank}"): ').strip()
+            icon2 = input(
+                f'Second player, choose your representative icon (cannot be "{blank}"): ').strip()
             if len(icon2) != 1:
                 print('Only one character!')
             elif icon2 == blank:
@@ -140,18 +138,22 @@ def four_in_a_row():
         target = table[row_to_replace][int(player_choose_column) - 1]
         while True:
             if target == blank:
-                table[row_to_replace][int(player_choose_column) - 1] = players[index + 1]
+                table[row_to_replace][int(
+                    player_choose_column) - 1] = players[index + 1]
                 break
             else:
                 row_to_replace -= 1
                 try:
-                    target = table[row_to_replace][int(player_choose_column) - 1]
+                    target = table[row_to_replace][int(
+                        player_choose_column) - 1]
                 except IndexError:
-                    print(f'Each stack in a column cannot go over {stack_limit}. Try another column\n')
+                    print(
+                        f'Each stack in a column cannot go over {stack_limit}. Try another column\n')
                     # get player decision again until valid
                     player_choose_column = get_player_decision()
                     row_to_replace = row - 1
-                    target = table[row_to_replace][int(player_choose_column) - 1]
+                    target = table[row_to_replace][int(
+                        player_choose_column) - 1]
 
         # check for winning condition
         winner = None
