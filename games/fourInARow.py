@@ -147,8 +147,6 @@ def four_in_a_row():
                     target = table[row_to_replace][int(
                         player_choose_column) - 1]
                 except IndexError:
-                    print(
-                        f'Each stack in a column cannot go over {stack_limit}. Try another column\n')
                     # get player decision again until valid
                     player_choose_column = get_player_decision()
                     row_to_replace = row - 1
